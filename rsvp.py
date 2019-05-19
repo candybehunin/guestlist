@@ -79,7 +79,7 @@ def request_plus1():
         plus_ones.append(Guest(_name=name, _age=age, _gender=gender, _check_in=None))
 
 @app.route("/")
-def template_test():
+def main():
     return render_template('template.html', guests=guests)
 
 # while True:
