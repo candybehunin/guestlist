@@ -18,9 +18,10 @@
 # After the event is over, say who didn't show up.
 
 import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
 
 class Guest:
     def __init__(self, _name, _age, _gender, _check_in):
@@ -78,9 +79,16 @@ def request_plus1():
         inviter.add_plus_one(name)
         plus_ones.append(Guest(_name=name, _age=age, _gender=gender, _check_in=None))
 
+
 @app.route("/")
 def main():
-    return render_template('template.html', guests=guests)
+    guest_filter = request.args.get('filter')
+    if guest_filter is None:
+        return render_template('template.html', guests=guests, filter='')
+    else:
+        filtered = [guest for guest in guests if (guest_filter.lower() in guest.name.lower())]
+        return render_template('template.html', guests=filtered, filter=guest_filter)
+
 
 # while True:
 #     command = input("Command? ")
